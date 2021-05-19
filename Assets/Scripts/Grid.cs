@@ -5,14 +5,13 @@ using UnityEngine;
 public class Grid
 {
 	public Pixel[,] cells;
-
 	private int GetNeighboursAliveCount(int x, int y)
-	{
+	{ // For a cell at coordinate (x,y), count how many neighbours are alive
 		//https://stackoverflow.com/questions/21925239/game-of-life-c-checking-neighbors
 		int count = 0;
-		for (int i = -1; i < 1; i++)
+		for (int i = -1; i <= 1; i++)
 		{
-			for (int j = -1; j < 1; j++)
+			for (int j = -1; j <= 1; j++)
 			{
 				if (!(i == 0 && j == 0) && inBounds(x + i, y + j) && cells[x + i, y + j].color.r > .5f)
 					count++;
@@ -22,12 +21,13 @@ public class Grid
 	}
 
 	private bool inBounds(int x, int y)
-	{
+	{ // For a cell at coordinate (x,y), check if it is in bounds
 		return (x >= 0 && x < cells.GetLength(0) && (y >= 0 && y < cells.GetLength(1)));
 	}
 
 	public void nextStep()
 	{
+		// Set all of the cells' neighboursAlive counts
 		for (int i = 0; i < cells.GetLength(0); i++)
 		{
 			for (int j = 0; j < cells.GetLength(1); j++)
@@ -36,6 +36,7 @@ public class Grid
 			}
 		}
 
+		// Execute the Cellular Automata algorithm
 		for (int i = 0; i < cells.GetLength(0); i++)
 		{
 			for (int j = 0; j < cells.GetLength(1); j++)

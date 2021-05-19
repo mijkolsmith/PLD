@@ -20,17 +20,23 @@ public class PerlinEditor : Editor
 		}
 
 		EditorGUILayout.BeginHorizontal();
-		EditorGUILayout.LabelField("Steps: ", GUILayout.Width(224));
+		EditorGUILayout.LabelField("Cellular Automata Steps: ", GUILayout.Width(224));
 		myScript.steps = EditorGUILayout.IntField(myScript.steps);
 		EditorGUILayout.EndHorizontal();
 		if (GUILayout.Button("Apply Cellular Automata"))
 		{
-			myScript.ApplyCellularAutomata();
+			Texture2D tex = (Texture2D) myScript.GetComponent<Renderer>().material.mainTexture;
+			myScript.ApplyCellularAutomata(tex);
 		}
 
-		if (GUILayout.Button("Generate Terrain from Noise"))
+		if (GUILayout.Button("Generate Terrain"))
 		{
 			myScript.GenerateTerrain();
+		}
+
+		if (GUILayout.Button("Delete Terrain"))
+		{
+			myScript.DeleteTerrain();
 		}
 
 		if (GUILayout.Button("Generate Lava"))
@@ -38,24 +44,21 @@ public class PerlinEditor : Editor
 			myScript.GenerateLava();
 		}
 
-		if (GUILayout.Button("Refresh Terrain (all steps above)"))
+		if (GUILayout.Button("Refresh (Execute all steps)"))
 		{
+			Texture2D tex = (Texture2D)myScript.GetComponent<Renderer>().material.mainTexture;
+
 			myScript.DeleteTerrain();
 
 			myScript.offsetX = Random.Range(-99999f, 99999f);
 			myScript.offsetY = Random.Range(-99999f, 99999f);
-			myScript.GetComponent<Renderer>().material.mainTexture = myScript.GenerateTexture();
+			tex = myScript.GenerateTexture();
 
-			myScript.ApplyCellularAutomata();
+			myScript.ApplyCellularAutomata(tex);
 
 			myScript.GenerateTerrain();
 
 			myScript.GenerateLava();
-		}
-
-		if (GUILayout.Button("Delete Terrain"))
-		{
-			myScript.DeleteTerrain();
 		}
 	}
 }

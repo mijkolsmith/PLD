@@ -41,6 +41,7 @@ public class PerlinNoise : MonoBehaviour
 
 	public Texture2D GenerateTexture()
 	{
+		texRenderer = GetComponent<Renderer>();
 		Texture2D tex = new Texture2D(width, height);
 
 		grid.cells = new Pixel[width, height];
@@ -72,7 +73,28 @@ public class PerlinNoise : MonoBehaviour
 			}
 		}
 
+		tex = GenerateWalls(tex);
+
 		tex.Apply();
+		return tex;
+	}
+
+	public Texture2D GenerateWalls(Texture2D tex)
+    {
+		Color c = new Color(255, 255, 255);
+
+		for (int x = 0; x < width; x++)
+		{
+			for (int y = 0; y < height; y++)
+			{
+				if (x == 0 || x == width - 1 || y == 0 || y == height - 1)
+                {
+					tex.SetPixel(x, y, c);
+					grid.cells[x, y] = new Pixel(x, y, c);
+                }
+			}
+		}
+
 		return tex;
 	}
 
@@ -90,12 +112,15 @@ public class PerlinNoise : MonoBehaviour
 		}
 	}
 
-	public void ApplyCellularAutomata()
+	public void ApplyCellularAutomata(Texture2D tex)
 	{
 		for (int i = 0; i < steps; i++)
 		{
 			grid.nextStep();
 		}
+
+		tex = GenerateWalls(tex);
+		tex.Apply();
 	}
 
 	public void GenerateTerrain()
