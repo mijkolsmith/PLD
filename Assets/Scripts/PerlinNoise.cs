@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class PerlinNoise : MonoBehaviour
 {
@@ -81,6 +82,7 @@ public class PerlinNoise : MonoBehaviour
 
 	public Texture2D GenerateWalls(Texture2D tex)
     {
+		// Add walls around the generated terrain
 		Color c = new Color(255, 255, 255);
 
 		for (int x = 0; x < width; x++)
@@ -125,6 +127,7 @@ public class PerlinNoise : MonoBehaviour
 
 	public void GenerateTerrain()
 	{
+		// Generate terrain according to the Perlin Noise texture
 		int i = 0;
 		foreach(Pixel pixel in grid.cells)
 		{
@@ -137,8 +140,14 @@ public class PerlinNoise : MonoBehaviour
 		}
 	}
 
+	public void SpawnPlayer()
+	{
+		// Spawn the player on a piece of land not covered with lava
+	}
+
 	public void DeleteTerrain()
 	{
+		// Delete all existing terrain and lava
 		foreach (GameObject pixel in pixels)
 		{
 			DestroyImmediate(pixel);
@@ -147,7 +156,21 @@ public class PerlinNoise : MonoBehaviour
 		{
 			DestroyImmediate(lava);
 		}
-		lavas.Clear();
-		pixels.Clear();
+		if ((lavas.Count == 0 || pixels.Count == 0) && (pixelHolder.transform.childCount > 0 || lavaHolder.transform.childCount > 0))
+		{
+			for (int i = pixelHolder.transform.childCount - 1; i >= 0; i--)
+			{
+				DestroyImmediate(pixelHolder.transform.GetChild(i).gameObject);
+			}
+			for (int i = lavaHolder.transform.childCount - 1; i >= 0; i--)
+			{
+				DestroyImmediate(lavaHolder.transform.GetChild(i).gameObject);
+			}
+		}
+		else 
+		{
+			lavas.Clear();
+			pixels.Clear();
+		}
 	}
 }

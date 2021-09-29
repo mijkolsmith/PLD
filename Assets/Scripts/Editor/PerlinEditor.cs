@@ -34,19 +34,19 @@ public class PerlinEditor : Editor
 			myScript.GenerateTerrain();
 		}
 
-		if (GUILayout.Button("Delete Terrain"))
-		{
-			myScript.DeleteTerrain();
-		}
-
 		if (GUILayout.Button("Generate Lava"))
 		{
 			myScript.GenerateLava();
 		}
 
+		if (GUILayout.Button("Delete Terrain"))
+		{
+			myScript.DeleteTerrain();
+		}
+
 		if (GUILayout.Button("Refresh (Execute all steps)"))
 		{
-			Texture2D tex = (Texture2D)myScript.GetComponent<Renderer>().material.mainTexture;
+			Texture2D tex = (Texture2D)myScript.GetComponent<Renderer>().sharedMaterial.mainTexture;
 
 			myScript.DeleteTerrain();
 
