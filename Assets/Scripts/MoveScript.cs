@@ -17,9 +17,9 @@ public class MoveScript : MonoBehaviour
     private void Start()
     {
         controller = GetComponent<PlayerController>();
-        horizontalString = transform.name + " Horizontal";
-        jumpString = transform.name + " Jump";
-        crouchString = transform.name + " Crouch";
+        horizontalString = "Player Horizontal";
+        jumpString = "Player Jump";
+        crouchString = "Player Crouch";
     }
 
     private void OnCollisionEnter2D(Collision2D other)

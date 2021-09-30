@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-[CustomEditor(typeof(PerlinNoise))]
+[CustomEditor(typeof(LevelGenerator))]
 public class PerlinEditor : Editor
 {
 	public override void OnInspectorGUI()
 	{
 		DrawDefaultInspector();
 
-		PerlinNoise myScript = (PerlinNoise)target;
+		LevelGenerator myScript = (LevelGenerator)target;
 
 		if (GUILayout.Button("Generate Texture"))
 		{
@@ -39,16 +39,21 @@ public class PerlinEditor : Editor
 			myScript.GenerateLava();
 		}
 
-		if (GUILayout.Button("Delete Terrain"))
+		if (GUILayout.Button("Spawn Player"))
 		{
-			myScript.DeleteTerrain();
+			myScript.SpawnPlayer();
+		}
+
+		if (GUILayout.Button("Delete Terrain and Player"))
+		{
+			myScript.DeleteTerrainAndPlayer();
 		}
 
 		if (GUILayout.Button("Refresh (Execute all steps)"))
 		{
 			Texture2D tex = (Texture2D)myScript.GetComponent<Renderer>().sharedMaterial.mainTexture;
 
-			myScript.DeleteTerrain();
+			myScript.DeleteTerrainAndPlayer();
 
 			myScript.offsetX = Random.Range(-99999f, 99999f);
 			myScript.offsetY = Random.Range(-99999f, 99999f);
@@ -59,6 +64,8 @@ public class PerlinEditor : Editor
 			myScript.GenerateTerrain();
 
 			myScript.GenerateLava();
+
+			myScript.SpawnPlayer();
 		}
 	}
 }
