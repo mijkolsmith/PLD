@@ -125,7 +125,6 @@ public class PlayerController : MonoBehaviour
 		}
 	}
 
-
 	private void Flip()
 	{
 		// Switch the way the player is labelled as facing.
@@ -135,5 +134,10 @@ public class PlayerController : MonoBehaviour
 		Vector3 theScale = transform.localScale;
 		theScale.x *= -1;
 		transform.localScale = theScale;
+	}
+
+	public void Shoot()
+	{
+		// Shoot a bullet from the player to the mouse
 	}
 }

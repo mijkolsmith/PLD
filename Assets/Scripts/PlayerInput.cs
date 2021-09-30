@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MoveScript : MonoBehaviour
+public class PlayerInput : MonoBehaviour
 {
     public PlayerController controller;
     public float horizontalMove = 0f;
@@ -10,16 +10,14 @@ public class MoveScript : MonoBehaviour
     public bool jump = false;
     public bool crouch = false;
     bool canCrouch = false;
-    private string horizontalString;
-    private string jumpString;
-    private string crouchString;
+    private string horizontalString = "Player Horizontal";
+    private string jumpString = "Player Jump";
+    private string crouchString = "Player Crouch";
+    private string shootString = "Player Shoot";
 
     private void Start()
     {
         controller = GetComponent<PlayerController>();
-        horizontalString = "Player Horizontal";
-        jumpString = "Player Jump";
-        crouchString = "Player Crouch";
     }
 
     private void OnCollisionEnter2D(Collision2D other)
@@ -38,18 +36,22 @@ public class MoveScript : MonoBehaviour
     void Update()
     {
         horizontalMove = Input.GetAxisRaw(horizontalString) * runSpeed;
-        if (Input.GetButtonDown(jumpString))
+        if(Input.GetButtonDown(jumpString))
         {
             jump = true;
         }
-        if (Input.GetButtonDown(crouchString) && canCrouch)
+        if(Input.GetButtonDown(crouchString) && canCrouch)
         {
             crouch = true;
         }
-        else if (Input.GetButtonUp(crouchString))
+        else if(Input.GetButtonUp(crouchString))
         {
             crouch = false;
         }
+        if(Input.GetButtonDown(shootString))
+		{
+            controller.Shoot();
+		}
     }
 
     private void FixedUpdate()

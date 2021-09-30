@@ -143,48 +143,43 @@ public class LevelGenerator : MonoBehaviour
 		}
 	}
 
+	public void GeneratePots()
+	{
+		// Generate breakable pots with a doll in them
+	}
+
+	public void GenerateBats()
+	{
+		// Generate bat enemies
+	}
+
 	public void SpawnPlayer()
 	{
 		// Spawn the player on a piece of land not covered with lava
-		/*Dictionary<int, int> spawnSpots = new Dictionary<int,int>();
-		for (int x = 0; x < width; x++)
-		{
-			for (int y = 0; y < height; y++)
-			{
-				if (grid.cells[x, y].y > height * .3f && grid.cells[x, y].y < height * .5f)
-				{
-					spawnSpots[x] = y;
-				}
-			}
-		}
-		Vector3 spawnSpot = new Vector3();
-		int index = Random.Range(0, spawnSpots.Count);
-		spawnSpot.x = spawnSpots.ElementAt(index).Key - width/2;
-		spawnSpot.y = spawnSpots.ElementAt(index).Value + height/2 + 1;*/
 		Vector3 spawnSpot = new Vector3();
 		spawnSpot.x = Random.Range(0, width - 1) - width / 2;
 		spawnSpot.y = 80;
 
 		LavaCheck(spawnSpot);
-
-		player = Instantiate(playerPrefabGO, spawnSpot, Quaternion.identity);
 	}
 
 	private void LavaCheck(Vector3 spawnSpot)
 	{
-		//TODO: fix this
 		ContactFilter2D contactFilter = new ContactFilter2D();
 		contactFilter.layerMask = layerMask;
 		Collider2D[] results = new Collider2D[1];
-		if (Physics2D.OverlapCircle(new Vector2(spawnSpot.x, 64), 1, contactFilter, results) > 0)
+		if (Physics2D.OverlapCircle(new Vector2(spawnSpot.x, 64), .2f, contactFilter, results) > 0)
 		{
-			Debug.Log("hit");
 			foreach (var result in results)
 			{
 				if (result.gameObject.layer == 6) // 6 is Lava layer
 				{
 					spawnSpot.x = Random.Range(0, width - 1) - width / 2;
 					LavaCheck(spawnSpot);
+				}
+				if (result.gameObject.layer != 6)
+				{
+					player = Instantiate(playerPrefabGO, spawnSpot, Quaternion.identity);
 				}
 			}
 		}
