@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using Pathfinding;
 
 public class LevelGenerator : MonoBehaviour
 {
@@ -143,14 +144,22 @@ public class LevelGenerator : MonoBehaviour
 		}
 	}
 
+	public void RefreshAStar()
+	{
+		GridGraph g = (GridGraph)AstarPath.active.data.graphs[0];
+		g.SetDimensions(width, height, 1);
+		g.Scan();
+	}
+
 	public void GeneratePots()
 	{
 		// Generate breakable pots with a doll in them
 	}
 
-	public void GenerateBats()
+	public void GenerateEnemies()
 	{
-		// Generate bat enemies
+		// Generate bat enemies (5 to 7)
+		// Generate imp enemies (2 to 3)
 	}
 
 	public void SpawnPlayer()
