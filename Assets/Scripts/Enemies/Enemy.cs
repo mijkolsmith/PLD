@@ -1,17 +1,34 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using Unity;
 using Pathfinding;
 
-public abstract class Enemy : MonoBehaviour
+public abstract class Enemy : MonoBehaviour, IDamageable
 {
-	private GameObject player;
+	public HealthComponent HealthComponent { get; set; }
+
+	public void TakeDamage(int damage)
+	{
+		HealthComponent.health -= damage;
+		if (HealthComponent.health == 0)
+		{
+			OnHealthZero();
+		}
+	}
+
+	public void OnHealthZero()
+	{
+		Destroy(gameObject);
+	}
+
+	protected GameObject player;
+	protected int range;
+	protected int startHealth;
 	private AIDestinationSetter destinationSetter;
 	private IAstarAI ai;
-	protected int range;
 
 	protected virtual void Start()
     {
+		HealthComponent = new HealthComponent(startHealth);
 		player = GameObject.Find("Terrain").GetComponent<LevelGenerator>().player;
 		destinationSetter = GetComponent<AIDestinationSetter>();
 		ai = GetComponent<IAstarAI>();
@@ -31,6 +48,15 @@ public abstract class Enemy : MonoBehaviour
 				destinationSetter.target = null;
 				ai.destination = transform.localPosition;
 			}
+		}
+	}
+
+	private void OnTriggerEnter2D(Collider2D collision)
+	{
+		if (collision.gameObject.CompareTag("Bullet"))
+		{
+			Destroy(collision.gameObject);
+			TakeDamage(1);
 		}
 	}
 }

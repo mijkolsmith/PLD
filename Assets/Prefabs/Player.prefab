@@ -183,6 +183,7 @@ MonoBehaviour:
   runSpeed: 40
   jump: 0
   crouch: 0
+  bulletGO: {fileID: 4997394130302972263, guid: 8578268bc97d9f245b358c5baaf24bc0, type: 3}
 --- !u!1 &8680248215582499895
 GameObject:
   m_ObjectHideFlags: 0

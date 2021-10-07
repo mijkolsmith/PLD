@@ -1,12 +1,11 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 public class Bat : Enemy
 {
-	protected int range = 20;
+	private new readonly int startHealth = 2;
+	private new readonly int range = 20;
+
 	protected override void Start()
 	{
+		base.startHealth = startHealth;
 		base.range = range;
 		base.Start();
 	}
